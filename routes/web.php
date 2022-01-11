@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Route::get('/dashboard', function () {
@@ -23,6 +26,28 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/index', function() {
-    return view('index');
-})->name('Home');
+/*
+Additional route white designing process in progress
+*/
+
+// Route::get('/index', function() {
+//     return view('index');
+// })->name('home');
+
+// Route::get('/dashboard/users', function() {
+//     return view('users');
+// })->middleware(['auth'])->name('users');
+
+Route::resource('/dashboard/users', UserController::class);
+
+Route::get('/dashboard/questionnaire', function() {
+    return view('questionnaire');
+})->middleware(['auth'])->name('questionnaire');
+
+Route::get('/dashboard/survey', function() {
+    return view('survey');
+})->middleware(['auth'])->name('survey');
+
+Route::get('/dashboard/posts', function() {
+    return view('posts');
+})->middleware(['auth'])->name('posts');
