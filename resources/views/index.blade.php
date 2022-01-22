@@ -34,7 +34,7 @@
 
     <div class="bg-white">
         <div class="max-w-7xl mx-auto flex justify-center items-center">
-            <img src="{{ asset('img/home1.jpg') }}" alt="" width="100%" height="100%">
+            <img src="{{ asset('img/home1.jpg') }}" alt="" class="h-auto">
         </div>
     </div>
 

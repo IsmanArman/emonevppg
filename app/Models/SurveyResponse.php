@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class SurveyResponse extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
 
-    public function users()
+    public function surveys ()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(Survey::class);
     }
 }

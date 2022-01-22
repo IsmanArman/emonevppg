@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
+use App\Models\Answer;
+use App\Models\Question;
+use App\Models\Questionnaire;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class QuestionnaireController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +18,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users', [
-            'users'=> User::simplePaginate(10)
+        return view('admin.questionnaires.index', [
+            'questionnaires' => Questionnaire::paginate(10)
         ]);
     }
 
@@ -28,7 +30,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create', ['roles' => Role::all()]);
+        return view('admin.questionnaires.create');
     }
 
     /**
@@ -39,20 +41,18 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|max:255|unique:users',
-            'password' => 'required|min:8|max:255'
+            'title' => 'required|max:255',
+            'purpose' => 'required|max:255'
         ]);
 
-        $user = User::create($validatedData);
+        $validatedData['user_id'] = auth()->user()->id;
 
-        $user->roles()->sync($request->roles);
+        Questionnaire::create($validatedData);
 
-        $request->session()->flash('success', 'You have created the user');
+        $request->session()->flash('success', 'You have created the questionnaire.');
 
-        return redirect(route('users.index'));
+        return redirect(route('questionnaire.index'));
     }
 
     /**
@@ -61,9 +61,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Questionnaire $questionnaire)
     {
-        //
+        return view('admin.questionnaires.show', [
+            'questionnaire' => $questionnaire
+        ]);
     }
 
     /**
@@ -74,11 +76,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.users.edit', 
-            [
-                'roles' => Role::all(),
-                'user' => User::find($id)
-            ]);
+        //
     }
 
     /**
@@ -90,14 +88,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-
-        $user->update($request->except(['_token', 'roles']));
-        $user->roles()->sync($request->roles);
-
-        $request->session()->flash('success', 'You have edited the user');
-
-        return redirect(route('users.index'));
+        //
     }
 
     /**
@@ -108,10 +99,10 @@ class UserController extends Controller
      */
     public function destroy($id, Request $request)
     {
-        User::destroy($id);
+        Questionnaire::destroy($id);
 
-        $request->session()->flash('success', 'You have deleted the user');
+        $request->session()->flash('success', 'You have deleted the questionnaire');
 
-        return redirect(route('users.index'));
+        return redirect(route('questionnaire.index'));
     }
 }

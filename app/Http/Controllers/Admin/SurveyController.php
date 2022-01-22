@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
+use App\Models\Questionnaire;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class SurveyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users', [
-            'users'=> User::simplePaginate(10)
-        ]);
+        return view('admin.surveys.index');
     }
 
     /**
@@ -28,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create', ['roles' => Role::all()]);
+        //
     }
 
     /**
@@ -37,22 +35,19 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Questionnaire $questionnaire, User $user)
     {
-        // dd($request);
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|max:255|unique:users',
-            'password' => 'required|min:8|max:255'
+        $validatedData = request()->validate([
+            'responses.*.answer_id' => 'required',
+            'responses.*.question_id' => 'required',
         ]);
 
-        $user = User::create($validatedData);
+        $validatedData['user_id'] = auth()->user()->id;
 
-        $user->roles()->sync($request->roles);
+        $survey = $questionnaire->surveys()->create($validatedData['survey']);
+        $survey->responses()->createMany($validatedData['responses']);
 
-        $request->session()->flash('success', 'You have created the user');
-
-        return redirect(route('users.index'));
+        return redirect('/dashboard')->with('success','Survey has been submitted!');
     }
 
     /**
@@ -74,11 +69,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.users.edit', 
-            [
-                'roles' => Role::all(),
-                'user' => User::find($id)
-            ]);
+        //
     }
 
     /**
@@ -90,14 +81,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-
-        $user->update($request->except(['_token', 'roles']));
-        $user->roles()->sync($request->roles);
-
-        $request->session()->flash('success', 'You have edited the user');
-
-        return redirect(route('users.index'));
+        //
     }
 
     /**
@@ -106,12 +90,8 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id, Request $request)
+    public function destroy($id)
     {
-        User::destroy($id);
-
-        $request->session()->flash('success', 'You have deleted the user');
-
-        return redirect(route('users.index'));
+        //
     }
 }

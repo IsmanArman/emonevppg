@@ -12,6 +12,9 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        
+        <!-- Icon -->
+        <link rel="shortcut icon" href="favicon.ico" type="{{ asset('img/unyb2.png') }}">
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>

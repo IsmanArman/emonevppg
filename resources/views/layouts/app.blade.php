@@ -13,9 +13,16 @@
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
+
+        <!-- Icon -->
+        <link rel="shortcut icon" href="favicon.ico" type="{{ asset('img/unyb2.png') }}">
+
         <!-- Scripts -->
         <script src="https://kit.fontawesome.com/b9cd54ecc3.js" crossorigin="anonymous"></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
 
         <!-- Required chart.js -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

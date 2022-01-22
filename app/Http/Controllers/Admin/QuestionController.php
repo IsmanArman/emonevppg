@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
+use App\Models\Questionnaire;
+use App\Models\Question;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class QuestionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users', [
-            'users'=> User::simplePaginate(10)
-        ]);
+        //
     }
 
     /**
@@ -26,9 +25,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Questionnaire $questionnaire)
     {
-        return view('admin.users.create', ['roles' => Role::all()]);
+        return view('admin.questions.create', compact('questionnaire'));
     }
 
     /**
@@ -37,22 +36,17 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Questionnaire $questionnaire)
     {
-        // dd($request);
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|max:255|unique:users',
-            'password' => 'required|min:8|max:255'
+        $validatedData = request()->validate([
+            'question.question' => 'required',
+            'answers.*.answer' => 'required'
         ]);
 
-        $user = User::create($validatedData);
+        $question = $questionnaire->questions()->create($validatedData['question']);
+        $question->answers()->createMany($validatedData['answers']);
 
-        $user->roles()->sync($request->roles);
-
-        $request->session()->flash('success', 'You have created the user');
-
-        return redirect(route('users.index'));
+        return redirect('/dashboard/questionnaires/'.$questionnaire->id);
     }
 
     /**
@@ -74,11 +68,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.users.edit', 
-            [
-                'roles' => Role::all(),
-                'user' => User::find($id)
-            ]);
+        //
     }
 
     /**
@@ -90,14 +80,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-
-        $user->update($request->except(['_token', 'roles']));
-        $user->roles()->sync($request->roles);
-
-        $request->session()->flash('success', 'You have edited the user');
-
-        return redirect(route('users.index'));
+        //
     }
 
     /**
@@ -106,12 +89,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id, Request $request)
+    public function destroy($id, Questionnaire $questionnaire, Question $question)
     {
-        User::destroy($id);
+        $question->answers()->delete();
+        $question->delete();
 
-        $request->session()->flash('success', 'You have deleted the user');
-
-        return redirect(route('users.index'));
+        return redirect('/dashboard/questionnaires/'.$questionnaire->id)->with('success','Question has been deleted!');
     }
 }

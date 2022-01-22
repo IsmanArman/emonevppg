@@ -13,6 +13,9 @@
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
+        <!-- Icon -->
+        <link rel="shortcut icon" href="favicon.ico" type="{{ asset('img/unyb2.png') }}">
+
         <!-- Scripts -->
         <script src="https://kit.fontawesome.com/b9cd54ecc3.js" crossorigin="anonymous"></script>
         <script src="{{ asset('js/app.js') }}" defer></script>

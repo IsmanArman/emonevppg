@@ -59,9 +59,9 @@
                                                 @enderror
                                             </div>
                             
-                                            <div class="col-span-6 sm:col-span-3">
+                                            {{-- <div class="col-span-6 sm:col-span-3">
                                                 <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-                                                <select id="role" name="role" autocomplete="role-name" 
+                                                <select id="roles[]" name="roles[]" autocomplete="role-name" 
                                                 class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
                                                 @error('password') is-invalid @enderror"  value="{{ old('role') }}">
                                                     @foreach ($roles as $role)
@@ -73,7 +73,21 @@
                                                     </span>
                                                     @enderror
                                                 </select>
-                                            </div>
+                                            </div> --}}
+                                            <div class="flex col-span-6 sm:col-span-3 justify-between">
+                                                <label for="roles" class="block text-sm font-medium text-gray-700">User Role</label>
+                                                <div>
+                                                    @foreach ($roles as $role)
+                                                        <div class="form-check">
+                                                            <input class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" 
+                                                                type="radio" name="roles[]" id="{{ $role->name }}" value="{{ $role->id }}">
+                                                            <label class="form-check-label inline-block text-gray-800" for="{{ $role->name }}">
+                                                                {{ $role->name }}
+                                                            </label>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                              </div>
 
                                         </div>
                                     </div>

@@ -26,6 +26,13 @@
                 <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
             </div>
 
+            <!-- Class Year -->
+            <div class="mt-4">
+                <x-label for="class_year" :value="__('Class Year')" />
+
+                <x-input id="class_year" class="block mt-1 w-full" type="text" name="class_year" :value="old('class_year')" required />
+            </div>
+
             <!-- Password -->
             <div class="mt-4">
                 <x-label for="password" :value="__('Password')" />
