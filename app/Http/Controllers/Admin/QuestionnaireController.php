@@ -61,7 +61,7 @@ class QuestionnaireController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Questionnaire $questionnaire)
+    public function show(Questionnaire $questionnaire)
     {
         return view('admin.questionnaires.show', [
             'questionnaire' => $questionnaire

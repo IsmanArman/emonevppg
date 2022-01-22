@@ -7,7 +7,7 @@
     
             <a class="inline-flex items-center px-4 py-0 bg-green-500 border border-transparent rounded-md font-semibold text-xs 
             text-white uppercase tracking-widest hover:bg-green-600 active:bg-green-800 focus:outline-none focus:border-green-800 focus:ring 
-            ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="/dashboard/questionnaires/{{ $questionnaire->id }}/questions/create">
+            ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150" href="/dashboard/questionnaire/{{ $questionnaire->id }}/questions/create">
             <i class="fas fa-user-plus"></i>
                 Add Questions
             </a>
